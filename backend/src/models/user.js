@@ -6,7 +6,8 @@ const User={};
 User.findByEmail = (email, result) =>{
 
     const sql = `
-    SELECT u.id, u.email, u.name, u.lastname, u.image, u.phone, u.password,
+    SELECT 
+    CONVERT( u.id, char) As id, u.email, u.name, u.lastname, u.image, u.phone, u.password,
 
         CONCAT('[',
         
@@ -32,7 +33,7 @@ User.findByEmail = (email, result) =>{
         
             INNER JOIN roles r ON r.id= h.id_rol
         
-            where email=?
+            where u.email=?
         
             GROUP BY u.id
     `;
@@ -55,56 +56,40 @@ User.findByEmail = (email, result) =>{
 }
 
 
-User.findById = (id, result) =>{
-
+User.findById = (id, result) => {
     const sql = `
-    SELECT u.id, u.email, u.name, u.lastname, u.image, u.phone, u.password,
-
-    CONCAT('[',
-    
-    GROUP_CONCAT(
-    
-    JSON_OBJECT(
-    
-    'id',  CONVERT( r.id, char),
-    
-    'name', r.name,
-    
-    'image', r.image,
-    
-    'route', r.route)
-    
-    ),
-    
-    ']') AS roles
-    
-        from users u
-    
-        INNER JOIN user_has_roles h ON h.id_user=u.id
-    
-        INNER JOIN roles r ON r.id= h.id_rol
-    
-        where id='?'
-    
+    SELECT CONVERT( u.id, char) As id, u.email, u.name, u.lastname, u.image, u.phone, u.password,
+        CONCAT('[',
+        GROUP_CONCAT(
+        JSON_OBJECT(
+        'id', CONVERT(r.id, CHAR),
+        'name', r.name,
+        'image', r.image,
+        'route', r.route)
+        ),
+        ']') AS roles
+        FROM users u
+        INNER JOIN user_has_roles h ON h.id_user = u.id
+        INNER JOIN roles r ON r.id = h.id_rol
+        WHERE u.id = ?
         GROUP BY u.id
     `;
 
     db.query(
         sql,
         [id],
-        (err, user)=>{
-            if(err){
-                console.log('Error:',err);
+        (err, user) => {
+            if (err) {
+                console.log('Error:', err);
                 result(err, null);
-            }
-            else{
-                console.log('usuario obtenido: ', user[0]);
+            } else {
+                console.log('Usuario obtenido: ', user[0]);
                 result(null, user[0]);
             }
         }
-    )
-
+    );
 }
+
 
 User.create = async (user, result) =>{
 
@@ -166,7 +151,6 @@ User.update= (user, result) =>{
             user.lastname,
             user.phone,
             user.image,
-
             user.id
         ],
         (err, res)=>{
@@ -182,38 +166,38 @@ User.update= (user, result) =>{
     )
 }
 
-User.updateWithoutImage= (user, result) =>{
-    const sql = `
-    UPDATE 
-        users
-    SET
-        name=?,
-        lastname=?,
-        phone=?
-    WHERE
-        id=?
-    `;
+User.updateWithoutImage = (user, result) => {
+    
+        const sql = `
+        UPDATE 
+            users
+        SET
+            name = ?,
+            lastname = ?,
+            phone = ?
+        WHERE
+            id = ?
+        `;
 
-    db.query(
-        sql,
-        [
-            user.name,
-            user.lastname,
-            user.phone,
-
-            user.id
-        ],
-        (err, res)=>{
-            if(err){
-                console.log('Error:',err);
-                result(err, null);
+        db.query(
+            sql,
+            [
+                user.name,
+                user.lastname,
+                user.phone,
+                user.id
+            ],
+            (err, res) => {
+                if (err) {
+                    console.log('Error:', err);
+                    result(err, null);
+                } else {
+                    console.log('Usuario actualizado: ', user.id);
+                    result(null, user.id);
+                }
             }
-            else{
-                console.log('Usuario actualizado: ', user.id);
-                result(null, user.id);
-            }
-        }
-    )
+        );
+   
 }
 
 User.delete = (id, result) => {

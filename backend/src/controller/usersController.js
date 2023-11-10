@@ -143,67 +143,97 @@ module.exports={
 
     },
 
-    async updateWithImage(req, res){
-        const user = JSON.parse(req.body.user); // capturar todos los campos
+  
 
-        const files = req.files;
+//
+async updateWithImage(req, res) {
 
-        if(files.length > 0) {
-            const path = `image_${Date.now()}`;
-            const url = await storage(files[0], path);
+    const user = JSON.parse(req.body.user); // CAPTURO LOS DATOS QUE ME ENVIE EL CLIENTE
 
-            if(url != undefined && url != null){
-                user.image = url;
-            }
+    const files = req.files;
+
+    if (files.length > 0) {
+        const path = `image_${Date.now()}`;
+        const url = await storage(files[0], path);
+
+        if (url != undefined && url != null) {
+            user.image = url;
+        }
+    }
+
+    User.update(user, (err, data) => {
+
+        
+        if (err) {
+            return res.status(501).json({
+                success: false,
+                message: 'Hubo un error con el registro del usuario',
+                error: err
+            });
         }
 
-
-        User.update(user, (err, data)=>{
-            if(err){
+        User.findById(data, (err, myData) => {
+            if (err) {
                 return res.status(501).json({
                     success: false,
-                    messsage: 'hubo un error co el registro del usuairo',
-                    error:err
+                    message: 'Hubo un error con el registro del usuario',
+                    error: err
                 });
             }
             
+            myData.session_token = user.session_token;
+            myData.roles = JSON.parse(myData.roles);
+
             return res.status(201).json({
                 success: true,
-                    messsage: 'El usurio se actulizo correctamente',
-                    data: user
+                message: 'El usuario se actualizo correctamente',
+                data: myData
             });
+        })
+    });
 
+},
 
-        });
+async updateWithoutImage(req, res) {
 
-    },
+    const user = req.body; // CAPTURO LOS DATOS QUE ME ENVIE EL CLIENTE
 
-    async updateWithoutImage(req, res){
-        const user = req.body.user; // capturar todos los campos
+    User.updateWithoutImage(user, (err, data) => {
 
-       
+    
+        if (err) {
+            return res.status(501).json({
+                success: false,
+                message: 'Hubo un error con el registro del usuario',
+                error: err
+            });
+        }
 
-
-        User.updateWithoutImage(user, (err, data)=>{
-            if(err){
+        User.findById(data, (err, myData) => {
+            if (err) {
                 return res.status(501).json({
                     success: false,
-                    messsage: 'hubo un error co el registro del usuairo',
-                    error:err
+                    message: 'Hubo un error con el registro del usuario',
+                    error: err
                 });
             }
             
+            myData.session_token = user.session_token;
+            myData.roles = JSON.parse(myData.roles);
+
             return res.status(201).json({
                 success: true,
-                    messsage: 'El usurio se actulizo correctamente',
-                    data: user
+                message: 'El usuario se actualizo correctamente',
+                data: myData
             });
+        })
 
+        
+    });
 
-        });
+},
 
-    },
-
+//
     deleteUser(req, res){
         const userId = req.params.id; // Obtén el ID del usuario a eliminar desde los parámetros de la solicitud
 
