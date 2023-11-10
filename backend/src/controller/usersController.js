@@ -235,7 +235,7 @@ async updateWithoutImage(req, res) {
 
 //
     deleteUser(req, res){
-        const userId = req.params.id; // Obtén el ID del usuario a eliminar desde los parámetros de la solicitud
+        const userId = req.body.id; // Obtén el ID del usuario a eliminar desde los parámetros de la solicitud
 
         User.delete(userId, (err, result) => {
             if (err) {

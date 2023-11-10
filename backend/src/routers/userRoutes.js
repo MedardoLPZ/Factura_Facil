@@ -19,7 +19,7 @@ module.exports=(app, upload)=>{
 
 
     //Solo el administador podra acceder esta api
-    app.delete('/api/users/delete/', userController.deleteUser);
+    app.delete('/api/users/delete', userController.deleteUser);
 
 
 

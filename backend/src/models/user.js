@@ -206,6 +206,13 @@ User.delete = (id, result) => {
     WHERE id = ?
     `;
 
+    if (!id) {
+        console.log('Error: ID no válido');
+        result({ message: 'ID no válido' }, null);
+        return;
+    }
+
+
     db.query(sql, [id], (err, res) => {
         if (err) {
             console.log('Error:', err);
