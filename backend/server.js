@@ -14,6 +14,9 @@ Importar Rutas
 */
 
 const userRoutes = require('./src/routers/userRoutes');
+const categoryController = require('./src/routers/categoryRoutes');
+const proveedoresController = require('./src/routers/proveedorRoutes');
+const productosController = require('./src/routers/productoRoutes');
 
 
 const port= process.env.PORT || 7000;
@@ -42,6 +45,9 @@ Llmado de las rutas
 */
 
 userRoutes(app, upload);
+categoryController(app);
+proveedoresController(app);
+productosController(app, upload);
 
 
 

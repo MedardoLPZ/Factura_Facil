@@ -124,7 +124,7 @@ User.create = async (user, result) =>{
                 result(err, null);
             }
             else{
-                console.log('id del nuveo usuario: ', res.insertId);
+                console.log('Id del nuveo usuario: ', res.insertId);
                 result(null, res.insertId);
             }
         }

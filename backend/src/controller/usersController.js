@@ -79,13 +79,13 @@ module.exports={
             if(err){
                 return res.status(501).json({
                     success: false,
-                    messsage: 'hubo un error co el registro del usuairo',
+                    message: 'hubo un error co el registro del usuairo',
                     error:err
                 });
             }
             return res.status(201).json({
                 success: true,
-                    messsage: 'el registro se realizo correctamente',
+                    message: 'el registro se realizo correctamente',
                     data: data
             });
 
