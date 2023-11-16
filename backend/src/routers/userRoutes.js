@@ -1,5 +1,7 @@
 const userController = require('../controller/usersController');
-const passport = require('passport')
+const passport = require('passport');
+
+
 module.exports=(app, upload)=>{
     //Get -> Obtener datos
     //Post -> almacenar Datos
@@ -9,7 +11,10 @@ module.exports=(app, upload)=>{
 
 
 
-    app.post('/api/users/create', userController.register);
+    app.get('/api/users', userController.select);
+
+
+    app.post('/api/users', userController.register);
     app.post('/api/users/createWithImage', upload.array('image', 1) , userController.registerWithImage);
     app.post('/api/users/login', userController.login);
 

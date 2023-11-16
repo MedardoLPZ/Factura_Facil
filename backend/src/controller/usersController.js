@@ -10,6 +10,56 @@ const storage = require('../utils/cloud_storage')
 
 module.exports={
 
+
+
+    select(req, res) {
+        User.select(req.body.user, async (err, myUser) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Hubo un error al obtener los usuarios',
+                    error: err,
+                });
+            }
+    
+            if (!myUser || !Array.isArray(myUser)) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'No se encontraron usuarios o el formato es incorrecto',
+                });
+            }
+    
+            const validUsers = myUser.filter(user => user.id && !isNaN(parseInt(user.id)));
+    
+            if (validUsers.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'No se encontraron usuarios con IDs válidos',
+                });
+            }
+    
+            const userData = validUsers.map(user => ({
+                id: `${user.id}`,
+                name: user.name,
+                lastname: user.lastname,
+                email: user.email,
+                phone: user.phone,
+                image: user.image,
+                roles: user.roles ? JSON.parse(user.roles) : null,
+            }));
+    
+            return res.status(200).json({
+                success: true,
+                message: 'Usuarios encontrados con IDs válidos',
+                data: userData,
+            });
+        });
+    },
+    
+
+
+
+
     login(req, res){
 
         const email = req.body.email;

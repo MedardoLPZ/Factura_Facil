@@ -90,6 +90,39 @@ User.findById = (id, result) => {
     );
 }
 
+User.select = (user, result) => {
+    const sql = `
+    SELECT CONVERT( u.id, char) As id, u.email, u.name, u.lastname, u.image, u.phone, u.password,
+    CONCAT('[',
+    GROUP_CONCAT(
+    JSON_OBJECT(
+    'id', CONVERT(r.id, CHAR),
+    'name', r.name,
+    'image', r.image,
+    'route', r.route)
+    ),
+    ']') AS roles
+    FROM users u
+    INNER JOIN user_has_roles h ON h.id_user = u.id
+    INNER JOIN roles r ON r.id = h.id_rol
+    GROUP BY u.id
+    `;
+
+    db.query(sql, (err, res) => {
+        if (err) {
+            console.log('Error:', err);
+            result(err, null);
+        } else {
+            if (res && res.length > 0) {
+                console.log('Usuarios encontrados:', res);
+                result(null, res);
+            } else {
+                result("Usuarios no encontrados", null);
+            }
+        }
+    });
+};
+
 
 User.create = async (user, result) =>{
 
