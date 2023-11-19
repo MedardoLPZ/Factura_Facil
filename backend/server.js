@@ -17,7 +17,8 @@ const userRoutes = require('./src/routers/userRoutes');
 const categoryController = require('./src/routers/categoryRoutes');
 const proveedoresController = require('./src/routers/proveedorRoutes');
 const productosController = require('./src/routers/productoRoutes');
-
+const facturasControllers = require('./src/routers/facturaRoutes');
+const detallesControllers = require('./src/routers/detalleRoutes');
 
 const port= process.env.PORT || 7000;
 
@@ -48,8 +49,8 @@ userRoutes(app, upload);
 categoryController(app);
 proveedoresController(app);
 productosController(app, upload);
-
-
+facturasControllers(app);
+detallesControllers(app);
 
 
 server.listen(7000, '192.168.56.1' || 'localhost', function() {

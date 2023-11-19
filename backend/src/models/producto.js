@@ -36,14 +36,14 @@ Producto.create = (producto, result) =>{
                 result(err, null);
             }
             else{
-                console.log('Id del nuevo producto: ', res. producto.id_provee);
-                result(null, res. producto.id_provee);
+                console.log('Id del nuevo producto: ', res.insertId);
+                result(null, res.insertId);
             }
         }
     )
 },
 
-Producto.updaate = (producto, result) =>{
+Producto.update = (producto, result) =>{
     const sql = `
     UPDATE producto
     SET
@@ -79,8 +79,8 @@ Producto.updaate = (producto, result) =>{
                 result(err, null);
             }
             else{
-                console.log('Id del producto actualizado: ', res.producto.id_prod);
-                result(null, res.producto.id_prod);
+                console.log('Id del producto actualizado: ', producto.id_prod);
+                result(null, producto.id_prod);
             }
         }
     )

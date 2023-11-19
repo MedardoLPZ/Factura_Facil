@@ -9,10 +9,10 @@ module.exports=(app)=>{
 
 
 
+    app.get('/api/category/getAll'/*, passport.authenticate('jwt', {session: false})*/, categoryController.getALL);
     app.post('/api/category/create', passport.authenticate('jwt', {session: false}), categoryController.create);
 
-   
-   
+
    /*
     app.post('/api/users/createWithImage', upload.array('image', 1) , userController.registerWithImage);
     app.post('/api/users/login', userController.login);

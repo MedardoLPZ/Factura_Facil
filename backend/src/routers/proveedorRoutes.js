@@ -7,6 +7,8 @@ module.exports=(app)=>{
     // put -> Actulizar Datos
     //Dele -> Eliminar Datos
     
+    app.get('/api/proveedores/getAll', passport.authenticate('jwt', {session: false}), proveedoresController.getALL);
+
     app.post('/api/proveedores/create', passport.authenticate('jwt', {session: false}), proveedoresController.create);
 
 }

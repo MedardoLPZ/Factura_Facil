@@ -10,7 +10,7 @@ module.exports = {
             if(err){
                 return res.status(501).json({
                     success: false,
-                    message: 'hubo un error co el registro del categoria',
+                    message: 'hubo un error con el registro del categoria',
                     error:err
                 });
             }
@@ -21,6 +21,21 @@ module.exports = {
             });
 
         });
+    },
+    getALL(req, res){
+        Category.getAll((err, data) => { 
+
+            if(err){
+                return res.status(501).json({
+                    success: false,
+                    message: 'hubo un error al momento de listar las  categorias',
+                    error:err
+                });
+            }
+            return res.status(201).json(data);
+
+        });
     }
 
 }
+

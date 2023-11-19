@@ -29,42 +29,45 @@ module.exports = {
                     });
                 }
 
-                producto.id_provee= id_product;
+                producto.id_prod= id_product;
                 const start = async () => {
-                    await asyncForEach(files, async (file) =>{
+                    await asyncForEach(files, async (file) => {
                         const path = `image_${Date.now()}`;
                         const url = await storage(file, path);
 
-                    if(url != undefined && url != null){ // se creo la imagen
-                        if (inserts == 0){
-                            producto.img_prod = url;
-                        }
-                        else if (inserts ==1 ){
-                            producto.img_prod2 = url;
-                        }
-                     }
-
-                     await  Producto.update(producto, (err, data) => {
-                        if(err){
-                            return res.status(501).json({
-                                success: false,
-                                messsage: 'hubo un error con el registro del producto',
-                                error:err
-                            });
+                        if (url != undefined && url != null) { // CREO LA IMAGEN EN FIREBASE
+                            if (inserts == 0) { //IMAGEN 1
+                                producto.img_prod = url;
+                            }
+                            else if (inserts == 1) { //IMAGEN 2
+                                producto.img_prod2 = url;
+                            }
+                           
                         }
 
-                        inserts = inserts + 1;
+                        await Producto.update(producto, (err, data) => {
+                            if (err) {
+                                return res.status(501).json({
+                                    success: false,
+                                    message: 'Hubo un error con el registro del producto',
+                                    error: err
+                                });
+                            }
 
-                        if(inserts = file.length){ //termino de almacenar las imahenes
-                            return res.status(201).json({
-                                success: true,
-                                    messsage: 'El producto se almaceno correctamente',
+                            inserts = inserts + 1;
+
+                            if (inserts == files.length) { // TERMINO DE ALAMACENAR LAS TRES IMAGENES
+                                return res.status(201).json({
+                                    success: true,
+                                    message: 'El producto se almaceno correctamente',
                                     data: data
-                            });
-                        }
-                     });
+                                });
+                            }
+
+                        });
                     });
                 }
+    
                 start();
             });
 
