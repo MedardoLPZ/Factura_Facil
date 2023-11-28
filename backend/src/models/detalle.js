@@ -9,13 +9,10 @@ Detalle.create = (detalle, result) => {
         detalle(
             id_fact, 
             id_prod, 
-            cantidad_deta, 
-            isv, 
-            des, 
-            sub, 
-            total
+            cantidad_deta,  
+            sub
             ) 
-        VALUES (?,?,?,?,?,?,?)
+        VALUES (?,?,?,?)
     
     `;
     db.query(
@@ -23,13 +20,8 @@ Detalle.create = (detalle, result) => {
         [
             detalle.id_fact, 
             detalle.id_prod, 
-            detalle.cantidad_deta, 
-            detalle.isv, 
-            detalle.des, 
-            detalle.sub, 
-            detalle.total 
-
-
+            detalle.cantidad_deta,  
+            detalle.sub
         ],
         (err, res)=>{
             if(err){
@@ -42,6 +34,35 @@ Detalle.create = (detalle, result) => {
             }
         }
     )
+}
+
+Detalle.findById = (id_fact, result) =>{
+
+    const sql = `
+    SELECT 
+    CONVERT(id_prod , char) AS id_prod,
+    CONVERT(cantidad_deta, char) AS cantidad_deta,
+    CONVERT(sub, char) AS sub
+        FROM detalle   
+        WHERE id_fact = ? 
+        GROUP BY id_detalle
+    `;
+
+    db.query(
+        sql,
+        [id_fact],
+        (err, res)=>{
+            if(err){
+                console.log('Error:',err);
+                result(err, null);
+            }
+            else{
+                console.log('usuario obtenido: ', res);
+                result(null, res);
+            }
+        }
+    )
+
 }
 
 

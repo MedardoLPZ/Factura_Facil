@@ -10,7 +10,10 @@ module.exports=(app)=>{
 
    // app.get('/api/facturass/getAll', passport.authenticate('jwt', {session: false}), facturasControllers.getALL);
 
-    app.post('/api/facturas/create'/*, passport.authenticate('jwt', {session: false})*/, facturasControllers.create)
-    
+    app.post('/api/facturas/create', passport.authenticate('jwt', {session: false}), facturasControllers.create)
+    app.post('/api/facturas/update', passport.authenticate('jwt', {session: false}), facturasControllers.update)
+    app.get('/api/facturas/max', passport.authenticate('jwt', {session: false}), facturasControllers.max)
+
+
 
 }

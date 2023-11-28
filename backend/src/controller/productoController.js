@@ -3,6 +3,21 @@ const storage = require('../utils/cloud_storage');
 const asyncForEach = require('../utils/async_foreach');
 
 module.exports = {
+
+    getALL(req, res){
+        Producto.getAll((err, data) => { 
+
+            if(err){
+                return res.status(501).json({
+                    success: false,
+                    message: 'hubo un error al momento de listar los productos',
+                    error:err
+                });
+            }
+            return res.status(201).json(data);
+
+        });
+    },
     create(req, res){
 
 
@@ -72,6 +87,40 @@ module.exports = {
             });
 
         }
+    },
+    findbyCategory(req, res){
+        const id_categoria = req.params.id_categoria;
+
+        Producto.findbyCategory(id_categoria, (err, data) => { 
+
+            if(err){
+                return res.status(501).json({
+                    success: false,
+                    message: 'hubo un error al momento de listar las  categorias',
+                    error:err
+                });
+            }
+            return res.status(201).json(data);
+
+        });
+    },
+
+    findByNameAndCategory(req, res){
+        const id_categoria = req.params.id_categoria;
+        const nombre_prod = req.params.nombre_prod;
+
+        Producto.findByNameAndCategory(nombre_prod, id_categoria, (err, data) => { 
+
+            if(err){
+                return res.status(501).json({
+                    success: false,
+                    message: 'hubo un error al momento de listar las  categorias',
+                    error:err
+                });
+            }
+            return res.status(201).json(data);
+
+        });
     }
 
 }

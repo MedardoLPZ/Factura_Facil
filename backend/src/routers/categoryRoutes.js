@@ -9,7 +9,7 @@ module.exports=(app)=>{
 
 
 
-    app.get('/api/category/getAll'/*, passport.authenticate('jwt', {session: false})*/, categoryController.getALL);
+    app.get('/api/category/getAll', passport.authenticate('jwt', {session: false}), categoryController.getALL);
     app.post('/api/category/create', passport.authenticate('jwt', {session: false}), categoryController.create);
 
 

@@ -1,6 +1,7 @@
 const Detalle = require('../models/detalle');
 
 module.exports = {
+
     create(req, res){
 
         const detalle = req.body;
@@ -21,5 +22,24 @@ module.exports = {
             });
 
         });
-}
+    },
+
+    findbyId(req, res){
+        const id_fact = req.params.id_fact;
+
+        Detalle.findById(id_fact, (err, data) => { 
+
+            if(err){
+                return res.status(501).json({
+                    success: false,
+                    message: 'hubo un error al momento de listar los productos',
+                    error:err
+                });
+            }
+            return res.status(201).json(data);
+
+        });
+    }
+
+
 }
