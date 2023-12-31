@@ -1,6 +1,21 @@
 const Factura = require('../models/factura');
 
 module.exports = {
+    
+    getALL(req, res){
+        Factura.getAll((err, data) => { 
+
+            if(err){
+                return res.status(501).json({
+                    success: false,
+                    message: 'hubo un error al momento de listar los productos',
+                    error:err
+                });
+            }
+            return res.status(201).json(data);
+
+        });
+    },
 
     create(req, res){
 

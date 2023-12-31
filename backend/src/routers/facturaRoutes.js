@@ -13,6 +13,8 @@ module.exports=(app)=>{
     app.post('/api/facturas/create', passport.authenticate('jwt', {session: false}), facturasControllers.create)
     app.post('/api/facturas/update', passport.authenticate('jwt', {session: false}), facturasControllers.update)
     app.get('/api/facturas/max', passport.authenticate('jwt', {session: false}), facturasControllers.max)
+    app.get('/api/facturas/getAll', /*passport.authenticate('jwt', {session: false}),*/ facturasControllers.getALL);
+    //app.get('/api/productos/findbyCategory/:id_categoria', passport.authenticate('jwt', {session: false}), productosController.findbyCategory);
 
 
 

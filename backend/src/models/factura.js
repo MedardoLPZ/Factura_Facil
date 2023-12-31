@@ -90,6 +90,68 @@ Factura.maxIdFact = (callback) => {
         }
     });
 }
+Factura.getAll = (result) => {
+    const sql =`
+    SELECT 
+        CONVERT(id_fact, char) AS id_fact,
+        CONVERT(id_user, char) AS id_user,
+        fecha_fact, 
+        cliente, 
+        isv, 
+        sub, 
+        total 
+    FROM 
+        facturas 
+    ORDER BY 
+        fecha_fact DESC
+    `;
+    db.query(
+     sql,
+     (err, data)=>{
+         if(err){
+             console.log('Error:',err);
+             result(err, null);
+         }
+         else{
+             console.log('Productos', data);
+             result(null, data);
+         }
+     }
+ 
+    )
+ 
+}
+
+
+Factura.findbyDetalle = (id_fact, result) => {
+    const sql = `
+    SELECT
+        CONVERT(D.id_detalle, char) AS id_detalle, 
+        CONVERT(D.id_fact, char) AS id_fact,
+        D.id_prod, 
+        D.cantidad_deta, 
+        D.sub 
+    FROM 
+        detalle  as D
+    WHERE 
+        D.id_fact = ?
+
+    `;
+    db.query(
+        sql,
+        [id_fact],
+        (err, res) => {
+            if(err){
+                console.log('Error:',err);
+                result(err, null);
+            }
+            else{
+                console.log('Detalles', res);
+                result(null, res);
+            }
+        }
+    );
+}
 
 
 
