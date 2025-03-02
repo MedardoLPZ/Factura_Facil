@@ -53,7 +53,7 @@ facturasControllers(app);
 detallesControllers(app);
 
 
-server.listen(7000, '192.168.56.1' || 'localhost', function() {
+server.listen(7000, 'localhost', function() {
     console.log('correo corriendo ' + process.pid + " "+port)
 });
 
